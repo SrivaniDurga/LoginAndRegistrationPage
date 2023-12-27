@@ -1,0 +1,134 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 3px;
+            width: 100%; /* Set width to 100% */
+            box-sizing: border-box;
+            position: fixed;
+            top: 0; /* Stick to the top */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        form {
+            display: block;
+            margin-top: 240px;
+        }
+
+        #welcomepage {
+            display: none;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f8f9fa;
+        }
+
+        .heading {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding-bottom: 20px;
+            font-size: 25px;
+            text-align: center;
+        }
+
+        .login {
+            text-align: center;
+        }
+
+        #loginButton {
+            border-radius: 10px;
+            background-color: cornflowerblue; /* Set background color for Login button */
+            color: white; /* Set text color for Login button */
+            padding: 10px 20px; /* Adjust padding for better appearance */
+            cursor: pointer; /* Change cursor on hover */
+        }
+
+        #signupButton {
+            border-radius: 10px;
+            background-color: mediumseagreen; /* Set background color for Signup button */
+            color: white; /* Set text color for Signup button */
+            padding: 10px 20px; /* Adjust padding for better appearance */
+            cursor: pointer; /* Change cursor on hover */
+        }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 class="login">Login Page</h1>
+    </header>
+
+    <form method="post" id="loginForm" onsubmit="return validateLogin();">
+        <h1 class="heading">Please enter your Username and Password</h1>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter your name" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+        <button type="submit" id="loginButton">Login</button>  
+        <button type="submit" id="signupButton">Signup</button>
+        <div id="message" class="message"></div>
+    </form>
+
+    <script>
+        const loginButton = document.getElementById('loginButton');
+        const signupButton = document.getElementById('signupButton');
+        function validateLogin() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            // Check if the username and password match the expected values
+            if (username === 'srivani' && password === 'password') {
+                window.location.href = '/message';
+            } else {
+                document.getElementById('message').innerHTML = 'Invalid Username/Password';
+            }
+
+            // Prevent the default form submission behavior
+            return false;      
+        }
+        document.getElementById('signupButton').addEventListener('click', function () {
+            // Redirect to the signup page
+            window.location.href = '/signup';
+        });
+    </script>
+    <footer>
+        <p>&copy; 2023 Login Website by Srivani</p>
+    </footer>
+
+</body>
+</html>

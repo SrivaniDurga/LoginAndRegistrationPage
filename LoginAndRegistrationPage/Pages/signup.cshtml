@@ -1,0 +1,252 @@
+﻿@page
+@model LoginAndRegistrationPage.Pages.sinupModel
+@{
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #4158D0;
+            background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+            color: #fff;
+            justify-content: center;
+            align-items: center;
+        }
+
+        form {
+            width: 750px;
+            padding: 20px;
+            margin: 0 auto;
+            margin-left: 205px;
+            margin-bottom: 50px;
+            border: 1px solid #ccc;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: normal;
+            color: black;
+        }
+
+        input {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            color: black;
+        }
+
+        button:hover {
+            background-color: #4a148c;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #6a1b9a;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+        }
+
+        #formcontainer {
+            background-color: mediumpurple;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .required::after{
+            content: '*';
+            color: red;
+            margin-right: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Registration Page</h1>
+
+    <form id="registrationForm">
+        <label for="firstName" class="required">First Name:</label>
+        <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required>
+
+        <label for="lastName" class="required">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
+
+        <label for="Gender" class="required">Gender:</label>
+        <br />
+        <label for="genderMale">Male</label>
+        <input type="radio" name="gender" id="genderMale" value="Male">
+        <label for="genderFemale">Female</label>
+        <input type="radio" name="gender" id="genderFemale" value="Female">
+
+        <label for="dob" class="required">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required>
+
+        <label for="maritalStatus">Marital Status:</label>
+        <select id="maritalStatus" name="maritalStatus" required>
+            <option value="single">Single</option>
+            <option value="married">Married</option>
+            <option value="divorced">Divorced</option>
+            <option value="widowed">Widowed</option>
+        </select>
+        <br />
+        <label for="mobileNumber" class="required">Mobile Number:</label>
+        <input type="tel" id="mobileNumber" name="mobileNumber" pattern="[0-9]{10}" placeholder="Enter your mobile number"
+               required>
+
+        <label for="country" class="required">Country:</label>
+        <select id="country" name="country" onchange="updateStates()" required> 
+            <option value="i">India</option>
+            <option value="j">Indonesia</option>
+            <option value="k">USA</option>
+            <option value="c">Canada</option>      
+        </select>
+
+        <!-- States dropdown -->
+        <div id="stateContainer" class="hidden">
+            <label for="state" id="stateLabel" class="visible">State:</label>
+            <select id="state" name="state" class="visible" onchange="updateCities()" required>             
+            </select>
+        </div>
+
+        <!-- Cities dropdown -->
+        <div id="cityContainer" class="hidden">
+            <label for="city" id="cityLabel" class="visible">City:</label>
+            <select id="city" name="city" class="visible" required>             
+            </select>
+        </div>
+        <br />
+        <label for="gmail">Gmail:</label>
+        <input type="email" id="gmail" name="gmail" placeholder="Enter your Gmail" required>
+
+        <div class="d-flex justify-content-center">
+            <button type="submit" id="registerButton">Register</button>
+        </div>
+    </form>
+
+    <div id="message" class="message"></div>
+    <script>
+        const countryDropdown = document.getElementById('country');
+        const stateContainer = document.getElementById('stateContainer');
+        const stateDropdown = document.getElementById('state');
+        const cityContainer = document.getElementById('cityContainer');
+        const cityDropdown = document.getElementById('city');
+        const stateLabel = document.getElementById('stateLabel');
+        const cityLabel = document.getElementById('cityLabel');
+        const registerButton = document.getElementById('registerButton');
+
+        // Country, state, and city data 
+        const statesByCountry = {
+            'i': ['Andhra Pradesh', 'Telangana', 'Tamil Nadu','Karnataka','Kerala'],
+            'j': ['Jakarta', 'Bali', 'Sumatra'],
+            'k': ['New York', 'California', 'Texas'],
+            'c': ['British Columbia','Ontario', 'Quebec'],
+        };
+
+        const citiesByState = {
+            'Andhra Pradesh': ['Bhimavaram', 'Rajahmundry','Vijayawada', 'Visakhapatnam', 'Tirupati'],
+            'Telangana': ['Hyderabad', 'Warangal', 'Karimnagar','Adilabad','Nizamabad'],
+            'Tamil Nadu': ['Chennai', 'Coimbatore', 'Madurai'],
+            'Karnataka': ['Bangalore', 'Mysore', 'Hubli', 'Belagavi'],
+            'Kerala':['Kottayam','Tiruvananthapuram','Kochi','Kollam'],
+            'Jakarta': ['Central Jakarta', 'West Jakarta', 'South Jakarta'],
+            'Bali': ['Denpasar', 'Ubud', 'Kuta'],
+            'Sumatra': ['Medan', 'Palembang', 'Padang'],
+            'New York': ['New York City', 'Albany', 'Buffalo'],
+            'California': ['Los Angeles', 'San Francisco', 'San Jose'],
+            'Texas': ['Houston', 'Dallas', 'Austin', 'Fort Worth'],
+            'British Columbia': ['Vancouver', 'Victoria', 'Kelowna','Armstrong'],
+            'Ontario':['Toronto', 'Ottawa', 'Hamilton', 'Windsor'],
+            'Quebec':['Montreal', 'Quebec City', 'Sherbrooke', 'Joliette'],          
+        };
+
+        function updateStates() {
+            const selectedCountry = countryDropdown.value;
+            const states = statesByCountry[selectedCountry] || [];
+
+            // Clear previous options in the state dropdown   
+            stateDropdown.innerHTML = ''; 
+            // Removes the "hidden" class from the state label and container, making them visible.
+            stateLabel.classList.remove('hidden');
+            stateContainer.classList.remove('hidden');
+            
+
+            if (states.length > 0) {
+                states.forEach(state => {
+                    const option = document.createElement('option');
+                    option.value = state;
+                    option.textContent = state;
+                    stateDropdown.appendChild(option);
+                });
+            }
+
+            //this line automatically triggers the updateCities function when the state changes
+            updateCities();
+        }
+
+        function updateCities() {
+            const selectedState = stateDropdown.value;
+            const cities = citiesByState[selectedState] || [];
+
+            cityDropdown.innerHTML = ''; // Clear previous options
+            
+
+            if (cities.length > 0) {
+                cityLabel.classList.remove('hidden');
+                cityContainer.classList.remove('hidden');
+
+                cities.forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    cityDropdown.appendChild(option);
+                });
+            } else {
+                cityLabel.classList.add('hidden');
+                cityContainer.classList.add('hidden');
+            }
+        }
+
+        document.getElementById('registerButton').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+            // Redirect to the thank you page
+            window.location.href = '/Thankyou';
+        });
+    </script>
+
+</body>
+</html>
